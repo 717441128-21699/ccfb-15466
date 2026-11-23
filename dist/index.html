@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>隧道LED灯条广告仿真</title>
+  <script type="module" crossorigin src="./assets/index-8JeLCjLz.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DQt6v3kh.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <h1>隧道LED广告仿真</h1>
+
+    <section>
+      <h2>① 灯条布置</h2>
+      <label>预设 <select id="selStripPreset"></select></label>
+      <div class="grid">
+        <label>间距 (m)<input id="inSpacing" type="number" step="0.1" min="0.2"></label>
+        <label>数量<input id="inCount" type="number" step="50" min="10"></label>
+        <label>像素/条<input id="inPixels" type="number" step="8" min="8"></label>
+        <label>像素距 (m)<input id="inPitch" type="number" step="0.005" min="0.005"></label>
+        <label>刷新率 (Hz)<input id="inRefresh" type="number" step="100" min="100"></label>
+        <label>占空比<input id="inDuty" type="number" step="0.05" min="0.05" max="1"></label>
+      </div>
+    </section>
+
+    <section>
+      <h2>② 列车运行</h2>
+      <label>速度曲线 <select id="selTrainPreset"></select></label>
+      <div class="grid">
+        <label>测速延迟 (s)<input id="inLatency" type="number" step="0.01" min="0" max="1"></label>
+        <label>测速噪声 (%)<input id="inNoise" type="number" step="0.1" min="0" max="5"></label>
+      </div>
+      <label>时序模式
+        <select id="selTimingMode">
+          <option value="adaptive">按测速自适应</option>
+          <option value="fixed">固定假设速度</option>
+        </select>
+      </label>
+      <label>假设速度 (km/h)<input id="inFixedSpeed" type="number" step="1" min="10" max="120"></label>
+    </section>
+
+    <section>
+      <h2>③ 乘客视角</h2>
+      <label>位置预设 <select id="selViewPreset"></select></label>
+      <div class="grid">
+        <label>眼睛X (m)<input id="inEyeX" type="number" step="0.1"></label>
+        <label>眼睛高 (m)<input id="inEyeY" type="number" step="0.05"></label>
+        <label>眼到窗 (m)<input id="inEyeToWin" type="number" step="0.1" min="0.1"></label>
+        <label>窗到墙 (m)<input id="inWallDist" type="number" step="0.1" min="0.2"></label>
+        <label>窗中心X (m)<input id="inWinCX" type="number" step="0.1"></label>
+        <label>窗宽 (m)<input id="inWinW" type="number" step="0.1" min="0.3"></label>
+        <label>窗下缘 (m)<input id="inWinY0" type="number" step="0.05"></label>
+        <label>窗上缘 (m)<input id="inWinY1" type="number" step="0.05"></label>
+      </div>
+    </section>
+
+    <section>
+      <h2>④ 点亮时序</h2>
+      <div class="row">
+        <button id="btnRebuild">重新计算时序</button>
+        <button id="btnCSV">导出时序 CSV</button>
+      </div>
+      <canvas id="scheduleView"></canvas>
+      <div id="schedStats" class="stats"></div>
+    </section>
+
+    <section>
+      <h2>动画素材</h2>
+      <label>预设动画 <select id="selAnim"></select></label>
+      <label>上传图片/视频 <input id="fileUpload" type="file" accept="image/*,video/*"></label>
+      <div class="grid">
+        <label>雪碧图帧数<input id="inSpriteFrames" type="number" value="1" min="1" max="64"></label>
+        <label>暂留 τ (ms)<input id="inTau" type="number" step="5" min="10" max="300"></label>
+        <label>曝光<input id="inExposure" type="number" step="0.2" min="0.2"></label>
+        <label>灯珠暗纹<input id="chkScan" type="checkbox" checked></label>
+      </div>
+    </section>
+
+    <section>
+      <h2>播放控制</h2>
+      <div class="row">
+        <button id="btnPlay">暂停</button>
+        <button id="btnReset">重置</button>
+        <label class="inline">倍速 <input id="inTimeScale" type="number" step="0.25" min="0.1" max="4" value="1"></label>
+      </div>
+    </section>
+  </aside>
+
+  <main>
+    <div id="viewWrap">
+      <canvas id="passengerView" width="1920" height="1080"></canvas>
+      <div id="hud"></div>
+    </div>
+    <div id="lower">
+      <div class="panel">
+        <h3>隧道侧视示意图</h3>
+        <canvas id="schematic"></canvas>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
